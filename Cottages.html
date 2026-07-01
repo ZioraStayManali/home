@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!-- saved from url=(0039)https://ziorastaymanali.github.io/home/cottages.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title> Ziora Stay Manali | Luxury Homestay in Manali </title>
+
+<link href="cottage_css2" rel="stylesheet">
+
+<script src="supabase-js@2"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:'Montserrat',sans-serif;
+background:#f6f1e8;
+color:#2c2a28;
+}
+
+.section{
+max-width:1100px;
+margin:auto;
+padding:100px 20px;
+}
+
+.section h1{
+font-family:'Playfair Display',serif;
+font-size:42px;
+text-align:center;
+margin-bottom:60px;
+}
+
+.cottage-card{
+background:white;
+margin-bottom:80px;
+border-radius:14px;
+overflow:hidden;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.cottage-image{
+width:100%;
+height:450px;
+object-fit:cover;
+}
+
+.cottage-content{
+padding:40px;
+}
+
+.cottage-content h2{
+font-family:'Playfair Display',serif;
+font-size:32px;
+margin-bottom:10px;
+}
+
+.price{
+color:#b76e79;
+font-weight:600;
+margin-bottom:20px;
+}
+
+.block{
+margin-top:25px;
+}
+
+.block h3{
+font-family:'Playfair Display',serif;
+font-size:20px;
+margin-bottom:10px;
+}
+
+.back-btn{
+display:inline-block;
+margin-top:60px;
+padding:14px 36px;
+border-radius:50px;
+background:#b76e79;
+color:white;
+text-decoration:none;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#9d5c66;
+}
+
+@media(max-width:768px){
+.cottage-image{
+height:300px;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="section">
+<h1>Our Signature Cottages</h1>
+
+<div id="cottages-container"></div>
+
+<video autoplay="" muted="" loop="" playsinline="">
+<source src="Room3.MOV" type="video/mp4">
+</video>
+
+<video autoplay="" muted="" loop="" playsinline="">
+<source src="Room4.MOV" type="video/mp4">
+</video>
+
+<a href="https://ziorastaymanali.github.io/home/" class="back-btn">Back to Home</a>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const supabaseUrl = "https://vefjalqeomncvvklsvua.supabase.co";
+  const supabaseKey = "sb_publishable_mKFtccQH4bzZ_u7PCVY4CQ_n_RwW3-o";
+
+  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+  async function loadCottages() {
+
+    const { data, error } = await supabase
+      .from("cottages")
+      .select("*");
+
+    if (error) {
+      console.error("Supabase Error:", error);
+      return;
+    }
+
+    const container = document.getElementById("cottages-container");
+    container.innerHTML = "";
+
+    if (!data || data.length === 0) {
+      container.innerHTML = "<p>No cottages available.</p>";
+      return;
+    }
+
+    data.forEach(function(cottage) {
+
+      container.innerHTML += `
+        <div class="cottage-card">
+
+          <img src="${cottage.image_url || ''}" class="cottage-image">
+
+          <div class="cottage-content">
+
+            <h2>${cottage.name || ''}</h2>
+
+            <div class="price">
+              ₹ ${cottage.price || ''}
+            </div>
+
+            <p>${cottage.description || ''}</p>
+
+            <div class="block">
+              <h3>Amenities</h3>
+              <p>${cottage.amenities || ''}</p>
+            </div>
+
+            <div class="block">
+              <h3>Policies</h3>
+              <p>${cottage.policies || ''}</p>
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    });
+
+  }
+
+  loadCottages();
+
+});
+
+</script>
+
+
+
+</body></html>
